@@ -1,0 +1,45 @@
+type VoteRequest = 
+ record {
+   option_index: nat;
+   poll_id: PollId;
+ };
+type UserId = principal;
+type Result_2 = 
+ variant {
+   err: text;
+   ok: PollId;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: Poll;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type PollId = nat;
+type Poll = 
+ record {
+   created_at: int;
+   creator: UserId;
+   expires_at: int;
+   id: PollId;
+   options: vec text;
+   question: text;
+   voters: vec UserId;
+   votes: vec nat;
+ };
+type CreatePollRequest = 
+ record {
+   duration: nat;
+   options: vec text;
+   question: text;
+ };
+service : {
+  create_poll: (CreatePollRequest) -> (Result_2);
+  get_poll: (PollId) -> (Result_1) query;
+  list_polls: () -> (vec Poll) query;
+  vote: (VoteRequest) -> (Result);
+}
